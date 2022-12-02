@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Wczytanie {
@@ -10,10 +11,12 @@ public class Wczytanie {
     private  String join;
     private String[] polaczenie;
 
-    private int[] docelowe_wartosci = new int[2];
-    int[][] tablica_wartosci;
+    private int[] docelowe_wartosci;
+    ArrayList<int[]> tablica_wartosci;
 
     public Wczytanie(String zrodlo) throws IOException {
+
+        tablica_wartosci = new ArrayList<int[]>();
         this.zrodlo = zrodlo;
         String st;
         File file = new File(zrodlo);
@@ -27,6 +30,7 @@ public class Wczytanie {
 
         int licznik =0;
         while(((st=br.readLine()) !=null)){
+
             if(licznik < 2) {
                 tabela = st.split(":");
                 zmienna = tabela[1];
@@ -41,23 +45,25 @@ public class Wczytanie {
             }else{
                 int i =0 ;
                 this.wartosci = st.split(",");
-                this.tablica_wartosci = new int[this.wartosci.length][2];
+                int[] temp_table;
                 for(String s: this.wartosci){
                     s = s.strip();
                     polaczenie = s.split(" ");
+                    this.docelowe_wartosci = new int[2];
                     this.docelowe_wartosci[0] = Integer.parseInt(this.polaczenie[0]);
                     this.docelowe_wartosci[1] = Integer.parseInt(this.polaczenie[1]);
-                    this.tablica_wartosci[i] = this.docelowe_wartosci;
-                    i++;
+
+                    tablica_wartosci.add(this.docelowe_wartosci);
+                     i++;
                 }
 
             }
             licznik++;
         }
-        for (int x[]: this.tablica_wartosci){
-            System.out.println(x[0]);
-        }
 
+        for (int[] x: tablica_wartosci){
+            System.out.println(Arrays.deepToString(new int[][]{Arrays.stream(x).toArray()}));
+        }
 
 
 

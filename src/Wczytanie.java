@@ -6,6 +6,7 @@ import java.util.HashMap;
 public class Wczytanie {
     ArrayList<int[]> tablica_wartosci;
     public HashMap<Integer, ArrayList<Integer>> klucze_polaczen;
+    public HashMap<Integer, ArrayList<Integer>> temp_klucze_polaczen;
 
     String zrodlo;
     int liczba_wierz;
@@ -73,6 +74,7 @@ public class Wczytanie {
 
 
         this.klucze_polaczen = utworz_klucze_polaczen(this.tablica_wartosci);
+        this.temp_klucze_polaczen = utworz_klucze_polaczen(this.tablica_wartosci);
 
     }
 

@@ -2,55 +2,56 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
+import java.util.Scanner;
 
-public class DFS {
-    int liczba_wierzcholkow;
-    ArrayList<Integer> dostepne_krawedzie;
-    Wczytanie wczytanie;
-    int[] krawedz;
-    int wierzcholek;
-    ArrayList<int[]> lista_polaczen;
+public class DFS extends Przeszykiwanie_grafu{
 
-    ArrayList<Integer> stos;
-    HashMap<Integer, ArrayList<Integer>> mapa_polaczen;
-    HashMap<Integer, String> kolory;
+
+    public DFS(String zrodlo) throws IOException {
+
+        super(zrodlo);
+
+    }
 
     public static void main(String[] args) throws IOException{
-        DFS dfs = new DFS("C:\\Users\\user\\IdeaProjects\\grafy\\src\\sample.txt");
+
+        DFS dfs = new DFS("C:\\Users\\user\\IdeaProjects\\grafy\\src\\sample_3.txt");
         dfs.przejscie();
     }
 
-    public DFS(String zrodlo) throws IOException {
-        Wczytanie wczytanie = new Wczytanie(zrodlo);
-        this.liczba_wierzcholkow = wczytanie.liczba_wierz;
-        this.wczytanie = wczytanie;
-        this.mapa_polaczen = wczytanie.klucze_polaczen;
-        this.kolory = new HashMap<Integer, String>();
-
-    }
 
 
-    public void przejscie(){
+    public void przejscie() throws IOException{
+
+
         lista_polaczen = new ArrayList<int[]>();
         stos = new ArrayList<Integer>();
         wierzcholek = 1;
 
 
         int i =0;
-        while(liczba_wierzcholkow != lista_polaczen.size() - 1 ) {
+        kolory.put(wierzcholek, "czerwony");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Czy chcesz prześledzić działanie programu? true/false");
+        boolean bool =  true   ;
+
+
+        while(liczba_wierzcholkow-1 != lista_polaczen.size()  ) {
             dostepne_krawedzie = mapa_polaczen.get(wierzcholek);
 
             krawedz = new int[2];
 
-            krawedz = pokoloruj_stworz_krawedz(wierzcholek, dostepne_krawedzie, true, "czerwony");
+            krawedz = pokoloruj_stworz_krawedz(wierzcholek, dostepne_krawedzie, bool);
             wierzcholek = krawedz[1];
             if(wierzcholek==0){
-                stos.remove(i);
-                wierzcholek = stos.get(i-1);
+                stos.remove(i-1);
+                wierzcholek = stos.get(i-2);
                 i--;
             }else{
-                i++;
+
                 this.stos.add(wierzcholek);
+                lista_polaczen.add(krawedz);
+                i++;
             }
 
 
@@ -58,24 +59,27 @@ public class DFS {
 
 
         }
+        BFS.zapisz_do_pliku(kolory, "C:\\Users\\user\\IdeaProjects\\grafy\\src\\output_2.txt");
+
     }
 
-    private int[] pokoloruj_stworz_krawedz(int wierzcholek, ArrayList<Integer> dostepne_krawedzie, boolean start, String kolor ){
+    private int[] pokoloruj_stworz_krawedz(int wierzcholek, ArrayList<Integer> dostepne_krawedzie, boolean bool ){
         int[] krawedz = new int[2];
         int cel=0;
-        if(dostepne_krawedzie.size()!=0){
-            if(start==true) {
-                kolor = "czerwony";
-                kolory.put(wierzcholek, kolor);
-                cel = Collections.min(dostepne_krawedzie);
+        String kolor="";
+        Scanner sc = new Scanner(System.in);
 
-            }else
-                cel = Collections.min(dostepne_krawedzie);
-            {
+
+
+        if(dostepne_krawedzie.size()!=0){
+
+            cel = Collections.min(dostepne_krawedzie);
+
                 if (!kolory.containsKey(cel)) {
                     krawedz = new int[2];
                     krawedz[0] = wierzcholek;
                     krawedz[1] = cel;
+                    kolor = kolory.get(wierzcholek);
 
                     if (kolor.equals("czerwony")) {
                         kolor = "zielony";
@@ -85,16 +89,23 @@ public class DFS {
                         kolor = "czerwony";
                     }
                     kolory.put(cel, kolor);
-                    krawedz[0] = wierzcholek;
-                    krawedz[1] = cel;
+                    if(bool==true){
+                        System.out.println("Pokolorowano wierzchołek " + cel + " na kolor "+ kolor);
 
+                    }
+                    krawedz[0] = wierzcholek;
+
+                    krawedz[1] = cel;
+                    System.out.println("Przechodzimy z wierzchołka " + wierzcholek + " na " + cel);
+//                    String st = sc.nextLine();
 
                 }else{
+
                     int finalCel = cel;
                     dostepne_krawedzie.removeIf(value -> value == finalCel);
-                    return pokoloruj_stworz_krawedz(wierzcholek, dostepne_krawedzie, false, kolor);
+                    return pokoloruj_stworz_krawedz(wierzcholek, dostepne_krawedzie, bool);
 
-                }
+
 
         }
         }else{

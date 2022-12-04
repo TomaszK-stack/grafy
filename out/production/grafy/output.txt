@@ -1,0 +1,7 @@
+1:czerwony
+2:zielony
+3:zielony
+4:czerwony
+5:czerwony
+6:czerwony
+7:zielony

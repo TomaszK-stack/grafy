@@ -2,12 +2,17 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class BFS extends Przeszykiwanie_grafu{
 
     public static void main(String[] args) throws  IOException{
-        BFS bfs = new BFS("C:\\Users\\user\\IdeaProjects\\grafy\\src\\sample.txt");
+        BFS bfs = new BFS("E:\\grafy\\src\\sample.txt");
+        BFS bfs_1 = new BFS("E:\\grafy\\src\\sample_2.txt");
+        BFS bfs_2 = new BFS("E:\\grafy\\src\\sample_3.txt");
         bfs.przejscie();
+        bfs_1.przejscie();
+        bfs_2.przejscie();
     }
 
 
@@ -24,14 +29,21 @@ public class BFS extends Przeszykiwanie_grafu{
 
         String kolor = "czerwony";
         ArrayList<Integer> kolejka = new ArrayList<Integer>();
+        super.przejscie();
+
 
 
         while(liczba_wierzcholkow-1 != lista_polaczen.size()){
+
+
             if(!kolory.containsKey(wierzcholek)) {
                 kolory.put(wierzcholek, kolor);
             }
+
                 dostepne_krawedzie = mapa_polaczen.get(wierzcholek);
+
             pokoloruj_stworz_krawedz(wierzcholek, dostepne_krawedzie);
+
             for(int x: dostepne_krawedzie){
                 if(!kolejka.contains(x)){
                     kolejka.add(x);
@@ -52,10 +64,13 @@ public class BFS extends Przeszykiwanie_grafu{
 
         }
 
-        zapisz_do_pliku(kolory, "C:\\Users\\user\\IdeaProjects\\grafy\\src\\output.txt");
+//        zapisz_do_pliku(kolory, "C:\\Users\\user\\IdeaProjects\\grafy\\src\\output.txt");
+        super.czy_dwdzielny();
     }
     private void pokoloruj_stworz_krawedz(int wierzcholek, ArrayList<Integer> dostepne_krawedzie ){
         String kolor = "";
+        String k="";
+        Scanner sc = new Scanner(System.in);
         int[] krawadz;
         for(int x: dostepne_krawedzie){
 
@@ -67,10 +82,16 @@ public class BFS extends Przeszykiwanie_grafu{
                 }else{
                     kolor = "czerwony";
                 }
-                kolory.put(x, kolor);
+
+                    kolory.put(x, kolor);
                 krawadz[0] = wierzcholek;
                 krawadz[1] = x;
                 this.lista_polaczen.add(krawadz);
+                if(bool.equals("t")) {
+                    System.out.println("kolorujemy wierzchołek " + x + " na kolor " + kolor + "\n" + "i dodajemy krawędź " + wierzcholek + "," + x + "do listy krawedzi");
+                    k = sc.nextLine();
+                }
+
             }
 
 

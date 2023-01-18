@@ -1,8 +1,6 @@
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Collections;
-import java.util.Scanner;
+import java.sql.Array;
+import java.util.*;
 
 public class DFS extends Przeszykiwanie_grafu{
 
@@ -15,8 +13,12 @@ public class DFS extends Przeszykiwanie_grafu{
 
     public static void main(String[] args) throws IOException{
 
-        DFS dfs = new DFS("C:\\Users\\user\\IdeaProjects\\grafy\\src\\sample_3.txt");
+        DFS dfs = new DFS("E:\\grafy\\src\\sample_3.txt");
+        DFS dfs_1 = new DFS("E:\\grafy\\src\\sample_2.txt");
+        DFS dfs_2 = new DFS("E:\\grafy\\src\\sample_3.txt");
         dfs.przejscie();
+        dfs_1.przejscie();
+        dfs_2.przejscie();
     }
 
 
@@ -31,12 +33,21 @@ public class DFS extends Przeszykiwanie_grafu{
 
         int i =0;
         kolory.put(wierzcholek, "czerwony");
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Czy chcesz prześledzić działanie programu? true/false");
-        boolean bool =  true   ;
-
-
+        super.przejscie();
+        if(this.bool.equals("t")){
+            System.out.println("Pokolorowano wierzchołek 1 na czerwono");
+        }
+        stos.add(wierzcholek);
+        String wyswietl = "";
         while(liczba_wierzcholkow-1 != lista_polaczen.size()  ) {
+            System.out.println("Stos= " + stos.toString());
+
+
+            for(int[] tab: lista_polaczen){
+                wyswietl = wyswietl + Arrays.toString(tab);
+            }
+            System.out.println("Lista krawędzi= " + wyswietl);
+            wyswietl = "";
             dostepne_krawedzie = mapa_polaczen.get(wierzcholek);
 
             krawedz = new int[2];
@@ -51,6 +62,9 @@ public class DFS extends Przeszykiwanie_grafu{
 
                 this.stos.add(wierzcholek);
                 lista_polaczen.add(krawedz);
+
+
+
                 i++;
             }
 
@@ -59,14 +73,15 @@ public class DFS extends Przeszykiwanie_grafu{
 
 
         }
-        BFS.zapisz_do_pliku(kolory, "C:\\Users\\user\\IdeaProjects\\grafy\\src\\output_2.txt");
-
+//        BFS.zapisz_do_pliku(kolory, "C:\\Users\\user\\IdeaProjects\\grafy\\src\\output_2.txt");
+        super.czy_dwdzielny();
     }
 
-    private int[] pokoloruj_stworz_krawedz(int wierzcholek, ArrayList<Integer> dostepne_krawedzie, boolean bool ){
+    private int[] pokoloruj_stworz_krawedz(int wierzcholek, ArrayList<Integer> dostepne_krawedzie, String bool ){
         int[] krawedz = new int[2];
         int cel=0;
         String kolor="";
+        String k = "'";
         Scanner sc = new Scanner(System.in);
 
 
@@ -89,16 +104,18 @@ public class DFS extends Przeszykiwanie_grafu{
                         kolor = "czerwony";
                     }
                     kolory.put(cel, kolor);
-                    if(bool==true){
+                    if(bool.equals("t")){
                         System.out.println("Pokolorowano wierzchołek " + cel + " na kolor "+ kolor);
 
                     }
                     krawedz[0] = wierzcholek;
 
                     krawedz[1] = cel;
-                    System.out.println("Przechodzimy z wierzchołka " + wierzcholek + " na " + cel);
+                    if(bool.equals("t")) {
+                        System.out.println("Przechodzimy z wierzchołka " + wierzcholek + " na " + cel);
+                        k = sc.nextLine();
 //                    String st = sc.nextLine();
-
+                    }
                 }else{
 
                     int finalCel = cel;

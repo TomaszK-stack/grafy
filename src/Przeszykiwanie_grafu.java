@@ -15,6 +15,8 @@ public abstract class  Przeszykiwanie_grafu {
     HashMap<Integer, String> kolory;
 
     Dwudzielnosc_grafu dwudzielnosc_grafu;
+
+    String bool;
     public Przeszykiwanie_grafu(String zrodlo) throws IOException {
         Wczytanie wczytanie = new Wczytanie(zrodlo);
         this.liczba_wierzcholkow = wczytanie.liczba_wierz;
@@ -26,7 +28,22 @@ public abstract class  Przeszykiwanie_grafu {
 
     }
     public void przejscie() throws IOException {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Czy chcesz prześledzić działanie programu? t/n");
+        this.bool =  sc.nextLine();
+        while (!bool.equals("t") && !bool.equals("n")){
+            System.out.println("Podaj prawidłową wartość");
+            this.bool = sc.nextLine();
+        }
+    }
 
+    protected void czy_dwdzielny(){
+        Dwudzielnosc_grafu dwudzielnosc_grafu = new Dwudzielnosc_grafu();
+        if(dwudzielnosc_grafu.czy_dwudielny(this.kolory, this.temp_mapa_polaczen) == true){
+            System.out.println("Graf jest dwudzielny");
+        }else{
+            System.out.println("Graf nie jest dwudzielny");
+        }
     }
 
     private int[] pokoloruj_stworz_krawedz(){
